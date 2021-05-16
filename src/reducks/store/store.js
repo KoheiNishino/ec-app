@@ -1,18 +1,24 @@
 // reduxモジュールのimport
-import { createStore as reduxCreateStore, combineReducers } from "redux";
+import {
+  createStore as reduxCreateStore,
+  combineReducers,
+  applyMiddleware
+} from "redux";
 
-// Reducersのimport
-//import { ProductsReducer } from "../products/reducers";
+import {connectRouter, routerMiddleware} from "connected-react-router";
 import { UsersReducer } from "../users/reducers";
 
 // 1. reduxのcreateStoreメソッドをreturn
-export default function createStore() {
+export default function createStore(history) {
   // reduxのcreateStoreメソッドの別名
   return reduxCreateStore(
     // 2. combineReducersでstateを生成
     combineReducers({
-      //products: ProductsReducer,
+      router: connectRouter(history),
       users: UsersReducer,
-    })
+    }),
+    applyMiddleware(
+      routerMiddleware(history)
+    )
   );
 }
