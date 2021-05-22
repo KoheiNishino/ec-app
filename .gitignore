@@ -23,9 +23,16 @@ yarn-debug.log*
 yarn-error.log*
 
 ### Firebase ###
+.idea
 **/node_modules/*
 **/.firebaserc
 
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/
+firestore.rules
+
+# others
+src/webhookConfig.js
+src/firebase/config.js
+src_class/firebase/config.js
