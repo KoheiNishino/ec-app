@@ -92,6 +92,10 @@ const ClosableDrawer = (props) => {
           keepMounted: true, // Better open performance on mobile.
         }}
       >
+      <div
+        onClose={(e) => props.onClose(e)}
+        onKeyDown={(e) => props.onClose(e)}
+      >
         <div className={classes.searchField}>
           <TextInput
             fullWidth={false}
@@ -127,6 +131,7 @@ const ClosableDrawer = (props) => {
           </ListItem>
         </List>
         <Divider />
+      </div>
       </Drawer>
     </nav>
   );

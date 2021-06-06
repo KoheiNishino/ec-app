@@ -1,13 +1,31 @@
-import { signInAction, signOutAction } from "./actions";
+import { fetchProductsInCartAction, signInAction, signOutAction } from "./actions";
 import { push } from "connected-react-router";
 import { auth, db, FirebaseTimestamp } from "../../firebase/index"
+
+const usersRef = db.collection("users");
+
+export const addProductToCart = (addedProduct) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = usersRef.doc(uid).collection("cart").doc();
+    addedProduct["cartId"] = cartRef.id;
+    await cartRef.set(addedProduct);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchProductsInCart = (products) => {
+  return async (dispatch) => {
+    dispatch(fetchProductsInCartAction(products));
+  };
+};
 
 export const listenAuthState = () => {
   return async (dispatch) => {
     return auth.onAuthStateChanged((user) => {
       if (user) {
         const uid = user.uid;
-        db.collection("users").doc(uid).get()
+        usersRef.doc(uid).get()
           .then((snapshot) => {
             const data = snapshot.data();
 
@@ -60,7 +78,7 @@ export const signIn = (email, password) => {
 
         if (user) {
           const uid = user.uid
-          db.collection("users").doc(uid).get()
+          usersRef.doc(uid).get()
             .then(snapshot => {
               const data = snapshot.data()
 
@@ -106,7 +124,7 @@ export const signUp = (username, email, password, confirmedPassword) => {
             username: username,
           };
 
-          db.collection("users").doc(uid).set(userInitialData)
+          usersRef.doc(uid).set(userInitialData)
           .then(() => {
             dispatch(push("/"));
           });
