@@ -4,6 +4,7 @@ import { Badge } from "@material-ui/core";
 import { fetchProductsInCart } from "../../reducks/users/operations";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsInCart, getUserId } from "../../reducks/users/selectors";
+import { push } from "connected-react-router";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { db } from "../../firebase/index";
@@ -51,7 +52,7 @@ const HeaderMenu = (props) => {
 
   return (
     <>
-      <IconButton>
+      <IconButton onClick={() => dispatch(push("/cart"))}>
         <Badge badgeContent={productsInCart.length} color="secondary">
           <ShoppingCartIcon />
         </Badge>
